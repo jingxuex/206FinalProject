@@ -426,9 +426,9 @@ def table_rating(criteria):
     )
 
     data = [trace]
-    py.plot(data, filename = 'Movie Information table')
+    namestring = 'Movie Information table with rating great than ' + str(criteria)
+    py.plot(data, filename = namestring)
     conn.close()
-
 
 def table_year(criteria):
     name_list = []
@@ -461,10 +461,11 @@ def table_year(criteria):
     )
 
     data = [trace]
-    py.plot(data, filename = 'Movie Information table')
+    namestring = 'Movie Information table with year in ' + criteria
+    py.plot(data, filename = namestring)
     conn.close()
 
-def pie_charts():
+def pie_chart():
     type_list = []
     DBNAME = 'movie.db'
     conn = sqlite3.connect(DBNAME)
@@ -518,3 +519,30 @@ def scatterplot():
 
     data = [trace]
     py.plot(data, filename='scatter plot between rating and runtime')
+
+def interactive_prompt():
+    response = ''
+    while response != 'exit':
+        response = input('Enter a command from (barchart, boxplot, tableRating(), tableYear(), piechart, scatterplot): ')
+
+        if response == 'barchart':
+            bar_chart_movie_genre()
+        elif response == 'boxplot':
+            boxplot_ratings()
+        elif response[:11] == 'tableRating':
+            rating = response.split('(', 1)[1].split(')')[0]
+            table_rating(rating)
+        elif response[:9] == 'tableYear':
+            year = response.split('(', 1)[1].split(')')[0]
+            table_year(year)
+        elif response == 'piechart':
+            pie_chart()
+        elif response == 'scatterplot':
+            scatterplot()
+        else:
+            print('Please enter a valid input.')
+            continue
+    print('Bye')
+
+if __name__=="__main__":
+    interactive_prompt()
