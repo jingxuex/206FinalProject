@@ -22,6 +22,9 @@ class TestDatabase(unittest.TestCase):
         result_list = results.fetchall()
         self.assertEqual(len(result_list),9)
         self.assertEqual(result_list[8][3], '2002')
+        self.assertEqual(result_list[0][1], 'PulpFiction')
+        self.assertEqual(result_list[0][2], 1)
+        self.assertEqual(result_list[0][3], '1994')
         conn.close()
 
     def test_MovieInfo_table(self):
@@ -34,14 +37,14 @@ class TestDatabase(unittest.TestCase):
         '''
         results = cur.execute(statement)
         result_list = results.fetchall()
-        self.assertIn(('Pulp Fiction',), result_list)
+        self.assertIn(('PulpFiction',), result_list)
 
         statement = '''
             SELECT COUNT(*) FROM MovieInfo
         '''
         results = cur.execute(statement)
         count = results.fetchone()[0]
-        self.assertEqual(count,200)xs
+        self.assertEqual(count,200)
         conn.close()
 
     def test_joins(self):
@@ -56,53 +59,27 @@ class TestDatabase(unittest.TestCase):
         results = cur.execute(statement)
         result = results.fetchone()
         self.assertEqual(('1995',),result)
+
+        statement1 = '''
+            SELECT Year FROM Top200 JOIN MovieInfo
+            ON MovieInfo.MovieId=Top200.Id
+        '''
+        result1 = cur.execute(statement1)
+        results1 = result1.fetchall()
+        self.assertEqual(len(results1), 200)
         conn.close()
+
+class TestMovie(unittest.TestCase):
+    def testConstructor(self):
+        movie1 = Movie('Pulp Fiction', 1, '1994')
+        self.assertEqual(movie1.title, 'Pulp Fiction')
+        self.assertEqual(movie1.rank, 1)
+        self.assertEqual(movie1.year, '1994')
+
+    def testStrConstructor(self):
+        movie1 = Movie('The Departed', 2, '2006')
+        self.assertEqual(movie1.__str__(), '2. The Departed is produced in 2006')
 
 
 
 unittest.main()
-
-
-
-
-
-    # def test_country_table(self):
-    #     conn = sqlite3.connect(DBNAME)
-    #     cur = conn.cursor()
-    #
-    #     sql = '''
-    #         SELECT EnglishName
-    #         FROM Countries
-    #         WHERE Region="Oceania"
-    #     '''
-    #     results = cur.execute(sql)
-    #     result_list = results.fetchall()
-    #     self.assertIn(('Australia',), result_list)
-    #     self.assertEqual(len(result_list), 27)
-    #
-    #     sql = '''
-    #         SELECT COUNT(*)
-    #         FROM Countries
-    #     '''
-    #     results = cur.execute(sql)
-    #     count = results.fetchone()[0]
-    #     self.assertEqual(count, 250)
-    #
-    #     conn.close()
-
-    # def test_joins(self):
-    #     conn = sqlite3.connect(DBNAME)
-    #     cur = conn.cursor()
-    #
-    #     sql = '''
-    #         SELECT Alpha2
-    #         FROM Bars
-    #             JOIN Countries
-    #             ON Bars.CompanyLocationId=Countries.Id
-    #         WHERE SpecificBeanBarName="Hacienda Victoria"
-    #             AND Company="Arete"
-    #     '''
-    #     results = cur.execute(sql)
-    #     result_list = results.fetchall()
-    #     self.assertIn(('US',), result_list)
-    #     conn.close()

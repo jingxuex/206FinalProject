@@ -24,7 +24,7 @@ try:
 except:
     CACHE_DICTION = {}
 
-## First Version of Cache only one parameters
+# First Version of Cache only one parameters
 def get_unique_key(url):
   return url
 
@@ -33,11 +33,9 @@ def make_request_using_cache(url):
     unique_ident = get_unique_key(url)
 
     if unique_ident in CACHE_DICTION:
-        #print("Getting cached data...")
         return CACHE_DICTION[unique_ident]
 
     else:
-        #print("Making a request for new data...")
         # Make the request and cache the new data
         resp = requests.get(url)
         CACHE_DICTION[unique_ident] = resp.text
@@ -47,7 +45,7 @@ def make_request_using_cache(url):
         fw.close() # Close the open file
         return CACHE_DICTION[unique_ident]
 
-## Second Version of Cache two parameters
+# Second Version of Cache two parameters
 def params_unique_combination(baseurl, params):
     alphabetized_keys = sorted(params.keys())
     res = []
@@ -59,11 +57,9 @@ def make_request_using_cache_second_version(baseurl, params):
     unique_ident = params_unique_combination(baseurl,params)
 
     if unique_ident in CACHE_DICTION:
-        #print("Getting cached data...")
         return CACHE_DICTION[unique_ident]
 
     else:
-        #print("Making a request for new data...")
         # Make the request and cache the new data
         resp = requests.get(baseurl, params)
         CACHE_DICTION[unique_ident] = json.loads(resp.text)
@@ -73,7 +69,7 @@ def make_request_using_cache_second_version(baseurl, params):
         fw.close() # Close the open file
         return CACHE_DICTION[unique_ident]
 
-## Third Version of Cache two parameters with OAuth1
+# Third Version of Cache two parameters with OAuth1
 def make_request_using_cache_third_version(baseurl, params):
     unique_ident = params_unique_combination(baseurl,params)
 
@@ -82,7 +78,6 @@ def make_request_using_cache_third_version(baseurl, params):
         return CACHE_DICTION[unique_ident]
 
     else:
-        #print("Making a request for new data...")
         # Make the request and cache the new data
         resp = requests.get(baseurl, params, auth=auth)
         CACHE_DICTION[unique_ident] = json.loads(resp.text)
@@ -92,6 +87,15 @@ def make_request_using_cache_third_version(baseurl, params):
         fw.close() # Close the open file
         return CACHE_DICTION[unique_ident]
 
+# Create Movie class
+class Movie:
+    def __init__(self, title, rank, year):
+        self.title = title
+        self.rank = rank
+        self.year = year
+
+    def __str__(self):
+        return str(self.rank) + '. ' + self.title + ' is produced in ' + self.year
 
 # Scrape a new page from top 200 movies
 topmovie_url = 'http://www.imdb.com/list/ls051781075/?sort=list_order,asc&st_dt=&mode=simple&page=1&ref_=ttls_vw_smp'
@@ -157,13 +161,12 @@ def get_tweets_for_movie(movie_title):
     baseurl_twitter = 'https://api.twitter.com/1.1/search/tweets.json'
     params = {'q':movie_title, 'count':1}
     d = make_request_using_cache_third_version(baseurl_twitter, params)
-    return d['statuses'][0]['text']
+    if len(d['statuses']) == 0:
+        return 'No related tweet'
+    else:
+        return d['statuses'][0]['text']
 
-title_no_space = []
-for item in mylist_title:
-    item = item.replace(" ","")
-    title_no_space.append(item)
-
+mylist_title[0] = mylist_title[0].replace(" ","")
 
 
 
@@ -229,6 +232,7 @@ for i in range(len(mylist_title)):
 
 
 movieInf = json.load(open('movie.json'))
+movieInf[0]['Title'] = 'PulpFiction'
 
 for i in range(len(movieInf)):
     insertion = (None, movieInf[i]['Title'], movieInf[i]['Country'],
@@ -523,7 +527,7 @@ def scatterplot():
 def interactive_prompt():
     response = ''
     while response != 'exit':
-        response = input('Enter a command from (barchart, boxplot, tableRating(), tableYear(), piechart, scatterplot): ')
+        response = input('Enter a command from (barchart, boxplot, tableRating(), tableYear(), piechart, scatterplot, tweet()): ')
 
         if response == 'barchart':
             bar_chart_movie_genre()
@@ -539,6 +543,14 @@ def interactive_prompt():
             pie_chart()
         elif response == 'scatterplot':
             scatterplot()
+        elif response[:5] == 'tweet':
+            ranking = int(response.split('(', 1)[1].split(')')[0])
+            mytitle = mylist_title[ranking-1]
+            myyear = mylist_year[ranking-1].split('(', 1)[1].split(')')[0]
+            mymovie = Movie(mytitle, ranking, myyear)
+            print(mymovie)
+            print(get_tweets_for_movie(mylist_title[ranking-1]))
+
         else:
             print('Please enter a valid input.')
             continue
