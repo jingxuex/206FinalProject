@@ -25,9 +25,13 @@ For this final project, I would like to write a program that let users choose sp
 (3) scrape the recent tweets and comments about the recent movies.https://twitter.com/   <br />
 
 ### Presentation options and how to run the program:
-(1) Bar charts of different movie types
-(2) Side-by-side boxplot of rating of movie type
-(3) Table of movie and rating with criteria - rating greater than the criteria
-(4) Table of movie and year with criteria - year equals to that criteria year
-(5) Pie Chart to show the percentage of different movie types
-(6) Scatterplot to show the relation between rating and runtime 
+(1) Bar charts of different movie types <br />
+(2) Side-by-side boxplot of rating of movie type <br />
+(3) Table of movie and rating with criteria - rating greater than the criteria <br />
+(4) Table of movie and year with criteria - year equals to that criteria year <br />
+(5) Pie Chart to show the percentage of different movie types <br />
+(6) Scatterplot to show the relation between rating and runtime <br />
+
+### Code Structure:
+The main SI206_omdb.py program consists one class Movie and six functions which are bar_chart_movie_genre(), boxplot_ratings(), table_rating(criteria), table_year(criteria), pie_chart(),
+scatterplot to implement my representation tools.
