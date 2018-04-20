@@ -449,12 +449,12 @@ def interactive_prompt():
             mymovie = Movie(mytitle, ranking, myyear)
             print(mymovie)
             print(get_tweets_for_movie(mylist_title[ranking-1]))
-
+        elif response == 'exit':
+            continue
         else:
             print('Please enter a valid input.')
             continue
     print('Bye')
 
 if __name__=="__main__":
-    boxplot_ratings()
     interactive_prompt()
