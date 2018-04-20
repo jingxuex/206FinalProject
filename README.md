@@ -33,7 +33,7 @@ For this final project, I would like to write a program that let users choose sp
 (6) Scatterplot to show the relation between rating and runtime <br />
 
 ### Code Structure:
-The main SI206_omdb.py program consists one class Movie and seven functions which are bar_chart_movie_genre(), boxplot_ratings(), table_rating(criteria), table_year(criteria), pie_chart(),
+The main SI206_omdb.py program consists one class Movie and seven functions which are bar_chart_movie_genre(), boxplot_ratings(), tableRating(criteria), tableYear(criteria), pie_chart(),
 scatterplot(), tweet(criteria) to implement my representation tools.
 
 ### User Guide:
@@ -49,11 +49,11 @@ Option two enter:
 ```
 Option three enter(in the parentheses enter a number movie-rating between 1 and 10):
 ```
-  table_rating() for example table_rating(7.8)
+  tableRating() for example tableRating(7.8)
 ```
 Option four enter(in the parentheses enter a year):
 ```
-  table_year() for example table_year(1993)
+  tableYear() for example tableYear(1993)
 ```
 Option five enter:
 ```
