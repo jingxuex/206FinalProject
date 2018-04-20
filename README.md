@@ -57,7 +57,7 @@ Option four enter(in the parentheses enter a year):
 ```
 Option five enter:
 ```
-  pie_chart
+  piechart
 ```
 
 Option six enter:
