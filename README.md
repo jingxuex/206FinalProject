@@ -4,17 +4,17 @@
 In order to run this program, you need to set up a virtual environment with
 python3 installed. The following is the step by step instruction:
 (1) get the path on the local machine with
-'''
+```
   which python3
-'''
+```
 (2) install virtual environment on your machine
-'''
+```
   virtualenv -p <python3_path> my_project
-'''
+```
 (3) start the virtual environment
-'''
+```
   source my_project/bin/activate
-'''
+```
 
 
 ### Project Overview:
@@ -33,5 +33,39 @@ For this final project, I would like to write a program that let users choose sp
 (6) Scatterplot to show the relation between rating and runtime <br />
 
 ### Code Structure:
-The main SI206_omdb.py program consists one class Movie and six functions which are bar_chart_movie_genre(), boxplot_ratings(), table_rating(criteria), table_year(criteria), pie_chart(),
-scatterplot to implement my representation tools.
+The main SI206_omdb.py program consists one class Movie and seven functions which are bar_chart_movie_genre(), boxplot_ratings(), table_rating(criteria), table_year(criteria), pie_chart(),
+scatterplot(), tweet(criteria) to implement my representation tools.
+
+### User Guide:
+At the beginning, it will give the user the prompt: <br />
+Enter a command from (barchart, boxplot, tableRating(), tableYear(), piechart, scatterplot, tweet(criteria)):  <br />
+Option one enter:
+```
+  barchart
+```
+Option two enter:
+```
+  boxplot
+```
+Option three enter(in the parentheses enter a number movie-rating between 1 and 10):
+```
+  table_rating() for example table_rating(7.8)
+```
+Option four enter(in the parentheses enter a year):
+```
+  table_year() for example table_year(1993)
+```
+Option five enter:
+```
+  pie_chart
+```
+
+Option six enter:
+```
+  scatterplot
+```
+
+Option seven enter (in the parentheses enter a rank number between 1 and 200)
+```
+  tweet() for example tweet(4)
+```
