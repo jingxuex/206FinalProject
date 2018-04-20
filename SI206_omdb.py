@@ -298,105 +298,6 @@ def bar_chart_movie_genre():
     py.plot(fig, filename='color-bar')
     conn.close()
 
-# Side by side boxplot of rating of every movie type
-def boxplot_ratings():
-    type_list = []
-    composite_list = []
-    ratings_composite = []
-    genre = []
-    ratings = []
-
-    DBNAME = 'movie.db'
-    conn = sqlite3.connect(DBNAME)
-    cur = conn.cursor()
-
-    statement = '''
-        SELECT AVG(imdbRating), Genre from MovieInfo
-        GROUP BY Genre
-    '''
-    cur.execute(statement)
-    for item in cur:
-        type_list = item[1].split(',')
-        for i in range(len(type_list)):
-            composite_list = [item[0],type_list[i]]
-            ratings_composite.append(composite_list)
-
-    for i in range(len(ratings_composite)):
-        ratings.append(ratings_composite[i][0])
-        genre.append(ratings_composite[i][1])
-
-    temp = defaultdict(set)
-
-    # Aggregate movie ratings by movie types
-    for gen, rat in zip(genre, ratings):
-        temp[gen].add(rat)
-
-    temp = dict(temp)
-    x_list = list(temp.keys())
-    y_data = list(temp.values())
-    y_list = []
-    for i in range(len(y_data)):
-        y_list.append(list(y_data[i]))
-
-
-    colors = ['rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)',
-    'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)',
-    'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)',
-    'rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)',
-    'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)',
-    'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)',
-    'rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)',
-    'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)',
-    'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)',
-    'rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)',
-    'rgba(44, 160, 101, 0.5)', 'rgba(255, 65, 54, 0.5)',
-    'rgba(207, 114, 255, 0.5)', 'rgba(127, 96, 0, 0.5)',
-    'rgba(93, 164, 214, 0.5)', 'rgba(255, 144, 14, 0.5)',
-    'rgba(44, 160, 101, 0.5)']
-
-    traces = []
-
-    for xd, yd, cls in zip(x_list, y_list, colors):
-            traces.append(go.Box(
-                y=yd,
-                name=xd,
-                boxpoints='all',
-                jitter=0.5,
-                whiskerwidth=0.2,
-                fillcolor=cls,
-                marker=dict(
-                    size=2,
-                ),
-                line=dict(width=1),
-            ))
-
-    layout = go.Layout(
-        title='Side By Side Boxplot of Different Types of Average Movie Ratings',
-        yaxis=dict(
-            autorange=True,
-            showgrid=True,
-            zeroline=True,
-            dtick=5,
-            gridcolor='rgb(255, 255, 255)',
-            gridwidth=1,
-            zerolinecolor='rgb(255, 255, 255)',
-            zerolinewidth=2,
-        ),
-        margin=dict(
-            l=40,
-            r=30,
-            b=80,
-            t=100,
-        ),
-        paper_bgcolor='rgb(243, 243, 243)',
-        plot_bgcolor='rgb(243, 243, 243)',
-        showlegend=False
-    )
-
-    fig = go.Figure(data=traces, layout=layout)
-    py.plot(fig)
-    conn.close()
-
 def table_rating(criteria):
     name_list = []
     year_list = []
@@ -527,12 +428,10 @@ def scatterplot():
 def interactive_prompt():
     response = ''
     while response != 'exit':
-        response = input('Enter a command from (barchart, boxplot, tableRating(), tableYear(), piechart, scatterplot, tweet()): ')
+        response = input('Enter a command from (barchart, tableRating(), tableYear(), piechart, scatterplot, tweet()): ')
 
         if response == 'barchart':
             bar_chart_movie_genre()
-        elif response == 'boxplot':
-            boxplot_ratings()
         elif response[:11] == 'tableRating':
             rating = response.split('(', 1)[1].split(')')[0]
             table_rating(rating)
@@ -557,4 +456,5 @@ def interactive_prompt():
     print('Bye')
 
 if __name__=="__main__":
+    boxplot_ratings()
     interactive_prompt()
